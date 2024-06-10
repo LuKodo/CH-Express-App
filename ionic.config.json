@@ -1,0 +1,8 @@
+{
+  "name": "C.H. Express",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite",
+  "id": "85c9a39e"
+}
