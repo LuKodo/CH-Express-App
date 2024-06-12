@@ -30,9 +30,10 @@ import '@ionic/react/css/display.css';
 /* import '@ionic/react/css/palettes/dark.always.css'; */
 /* import '@ionic/react/css/palettes/dark.class.css'; */
 import '@ionic/react/css/palettes/dark.system.css';
-
-/* Theme variables */
-import './theme/variables.css';
+import './assets/bootstrap.min.css'
+import '@fontsource/roboto';
+import 'bootstrap-icons/font/bootstrap-icons.css';
+import { Orders } from './components/Orders';
 
 setupIonicReact();
 
@@ -44,10 +45,10 @@ const App: React.FC = () => {
           <Menu />
           <IonRouterOutlet id="main">
             <Route path="/" exact={true}>
-              <Redirect to="/folder/Inbox" />
+              <Redirect to="/orders" />
             </Route>
-            <Route path="/folder/:name" exact={true}>
-              <Page />
+            <Route path="/orders" exact={true}>
+              <Orders />
             </Route>
           </IonRouterOutlet>
         </IonSplitPane>
