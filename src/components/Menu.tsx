@@ -1,83 +1,93 @@
 import {
-  IonAvatar,
   IonContent,
-  IonIcon,
+  IonHeader,
   IonItem,
-  IonLabel,
   IonList,
-  IonListHeader,
   IonMenu,
   IonMenuToggle,
-  IonNote,
+  IonTitle,
+  IonToolbar,
 } from '@ionic/react';
 
-import { useLocation } from 'react-router-dom';
-import { archiveOutline, archiveSharp, bookmarkOutline, carOutline, cardOutline, constructOutline, documentsOutline, heartOutline, heartSharp, mailOutline, mailSharp, mapOutline, navigateOutline, paperPlaneOutline, paperPlaneSharp, peopleOutline, trashOutline, trashSharp, warningOutline, warningSharp } from 'ionicons/icons';
+import { useHistory } from 'react-router-dom';
 
 interface AppPage {
   url: string;
-  iosIcon: string;
-  mdIcon: string;
+  icon: string;
   title: string;
+  out?: boolean;
 }
 
 const appPages: AppPage[] = [
   {
     title: 'Ordenes de Servicio',
     url: '/orders',
-    iosIcon: documentsOutline,
-    mdIcon: documentsOutline
+    icon: 'file-earmark-binary',
   },
   {
     title: 'Flete Destino',
-    url: '/folder/Outbox',
-    iosIcon: navigateOutline,
-    mdIcon: navigateOutline
+    url: '/destination',
+    icon: 'truck',
   },
   {
     title: 'Relación de Viaje',
-    url: '/folder/Favorites',
-    iosIcon: mapOutline,
-    mdIcon: mapOutline
+    url: '/travel_relation',
+    icon: 'geo-alt',
   },
   {
     title: 'Información del Vehículo',
     url: '/folder/Archived',
-    iosIcon: carOutline,
-    mdIcon: carOutline
+    icon: 'truck',
   },
   {
     title: 'Perfil',
     url: '/folder/Trash',
-    iosIcon: peopleOutline,
-    mdIcon: peopleOutline
+    icon: 'person-gear',
   },
   {
     title: 'Ajustes',
     url: '/folder/Spam',
-    iosIcon: constructOutline,
-    mdIcon: constructOutline
+    icon: 'gear',
+  },
+  {
+    title: 'Salir',
+    url: '/',
+    icon: 'box-arrow-left',
+    out: true,
   }
 ];
 
 const Menu: React.FC = () => {
-  const location = useLocation();
+  const history = useHistory();
+
+  const navigateTo = (path: AppPage) => {
+    if (path.out) {
+      logout();
+      return;
+    }
+    history.push(path.url);
+  };
+
+  const logout = () => {
+    localStorage.clear();
+    history.push('/');
+  };
 
   return (
     <IonMenu contentId="main" type="overlay">
+      <IonHeader>
+        <IonToolbar>
+          <IonTitle>Menu</IonTitle>
+        </IonToolbar>
+      </IonHeader>
       <IonContent>
-        <IonList id="inbox-list">
-          <IonListHeader style={{ marginBottom: '15px', textAlign: 'center'}}>
-            <IonAvatar>
-              <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
-            </IonAvatar>
-          </IonListHeader>
+        <IonList>
           {appPages.map((appPage, index) => {
             return (
-              <IonMenuToggle key={index} autoHide={false}>
-                <IonItem className={location.pathname === appPage.url ? 'selected' : ''} routerLink={appPage.url} routerDirection="none" lines="none" detail={false}>
-                  <IonIcon aria-hidden="true" slot="start" ios={appPage.iosIcon} md={appPage.mdIcon} />
-                  <IonLabel>{appPage.title}</IonLabel>
+              <IonMenuToggle autoHide={false} key={index}>
+                <IonItem onClick={() => navigateTo(appPage)} button>
+                  <i className={`bi bi-${appPage.icon} text-warning me-2`} />
+                  &nbsp;{` ` + appPage.title}
                 </IonItem>
               </IonMenuToggle>
             );

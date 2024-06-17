@@ -1,26 +1,65 @@
 [
   {
-    "numero_pedido": 1647,
-    "origen": "Caracas",
-    "destino": "Barcelona",
-    "fecha_entrega": "2022-03-01"
+    "numero_pedido": "J2354",
+    "origen": "Tokio",
+    "destino": "Nueva Delhi",
+    "fecha_entrega": "2022-03-01",
+    "tipo": "travel_relation"
   },
   {
-    "numero_pedido": 2827,
-    "origen": "Bogota",
-    "destino": "Nueva York",
-    "fecha_entrega": "2022-03-01"
+    "numero_pedido": "N7362",
+    "origen": "Londres",
+    "destino": "París",
+    "fecha_entrega": "2022-03-01",
+    "tipo": "destination"
   },
   {
-    "numero_pedido": 3258,
-    "origen": "Barquisimeto",
-    "destino": "Nueva Esparta",
-    "fecha_entrega": "2022-03-01"
+    "numero_pedido": "F5421",
+    "origen": "Nueva York",
+    "destino": "Los Ángeles",
+    "fecha_entrega": "2022-03-01",
+    "tipo": "order_service"
   },
   {
-    "numero_pedido": 4893,
-    "origen": "Jerusalem",
-    "destino": "Ankara",
-    "fecha_entrega": "2022-03-01"
+    "numero_pedido": "M8756",
+    "origen": "Beijing",
+    "destino": "Moscú",
+    "fecha_entrega": "2022-03-01",
+    "tipo": "travel_relation"
+  },
+  {
+    "numero_pedido": "P6218",
+    "origen": "Roma",
+    "destino": "Madrid",
+    "fecha_entrega": "2022-03-01",
+    "tipo": "destination"
+  },
+  {
+    "numero_pedido": "T1243",
+    "origen": "Sídney",
+    "destino": "Seúl",
+    "fecha_entrega": "2022-03-01",
+    "tipo": "order_service"
+  },
+  {
+    "numero_pedido": "Q9871",
+    "origen": "El Cairo",
+    "destino": "Ciudad de México",
+    "fecha_entrega": "2022-03-01",
+    "tipo": "travel_relation"
+  },
+  {
+    "numero_pedido": "X4692",
+    "origen": "Bangkok",
+    "destino": "Toronto",
+    "fecha_entrega": "2022-03-01",
+    "tipo": "destination"
+  },
+  {
+    "numero_pedido": "K1587",
+    "origen": "Buenos Aires",
+    "destino": "Sao Paulo",
+    "fecha_entrega": "2022-03-01",
+    "tipo": "destination"
   }
 ]

@@ -2,7 +2,6 @@ import { IonApp, IonRouterOutlet, IonSplitPane, setupIonicReact } from '@ionic/r
 import { IonReactRouter } from '@ionic/react-router';
 import { Redirect, Route } from 'react-router-dom';
 import Menu from './components/Menu';
-import Page from './pages/Page';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -30,10 +29,13 @@ import '@ionic/react/css/display.css';
 /* import '@ionic/react/css/palettes/dark.always.css'; */
 /* import '@ionic/react/css/palettes/dark.class.css'; */
 import '@ionic/react/css/palettes/dark.system.css';
-import './assets/bootstrap.min.css'
-import '@fontsource/roboto';
+import '@fontsource-variable/inter';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import { Orders } from './components/Orders';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './css/main.css';
+import { Tasks } from './components/OrderList';
+import { Login } from './pages/Login';
+import { OrderDetails } from './components/OrderDetails';
 
 setupIonicReact();
 
@@ -41,17 +43,30 @@ const App: React.FC = () => {
   return (
     <IonApp>
       <IonReactRouter>
-        <IonSplitPane contentId="main">
-          <Menu />
-          <IonRouterOutlet id="main">
-            <Route path="/" exact={true}>
-              <Redirect to="/orders" />
-            </Route>
+        <IonRouterOutlet>
+          <Route path="/" exact={true}>
+            <Redirect to="/login" />
+          </Route>
+          <Route path="/login" exact={true}>
+            <Login />
+          </Route>
+
+          <IonSplitPane contentId="main">
+            <Menu />
             <Route path="/orders" exact={true}>
-              <Orders />
+              <Tasks type="order_service" />
             </Route>
-          </IonRouterOutlet>
-        </IonSplitPane>
+            <Route path="/destination" exact={true}>
+              <Tasks type="destination" />
+            </Route>
+            <Route path="/travel_relation" exact={true}>
+              <Tasks type="travel_relation" />
+            </Route>
+            <Route path="/details/:id" exact={true}>
+              <OrderDetails />
+            </Route>
+          </IonSplitPane>
+        </IonRouterOutlet>
       </IonReactRouter>
     </IonApp>
   );
