@@ -1,4 +1,5 @@
 import Swal from 'sweetalert2'
+import {changeStatus} from "./task.service";
 export class StatusManage {
     draft ="Borrador"
     pending ="Pendiente"
@@ -54,9 +55,7 @@ export class StatusManage {
         }
     }
 
-    setNewStatus(prev:string, next: string) {
-        Swal.fire({
-
-        })
+    async setNewStatus(prev:string, next: string, id:number) {
+        await changeStatus(id, next)
     }
 }

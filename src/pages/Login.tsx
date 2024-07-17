@@ -1,10 +1,10 @@
 import { IonAlert, IonButton, IonContent, IonImg, IonInput, IonItem } from "@ionic/react";
 import { useEffect, useState } from "react";
 import { User, getUsers } from "../services/user.service";
-import { useHistory } from "react-router";
+import { useNavigate } from "react-router";
 
 export const Login = () => {
-    const history = useHistory();
+    const navigate = useNavigate()
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [showAlert, setShowAlert] = useState(false);
@@ -18,7 +18,7 @@ export const Login = () => {
     useEffect(() => {
         const logged = localStorage.getItem("user");
         if (logged) {
-            history.push('/orders');
+            navigate('/orders');
         }
 
         const fetchTasks = async () => {
@@ -44,7 +44,7 @@ export const Login = () => {
 
             if (user) {
                 localStorage.setItem("user", JSON.stringify(user));
-                history.push('/orders');
+                navigate('/orders');
             } else {
                 setAlertMessage({
                     header: "Login Failed",
@@ -78,7 +78,7 @@ export const Login = () => {
                     placeholder="Usuario"
                     onIonInput={(e) => setUsername(e.detail.value!)}
                     value={username}
-                    mode="ios"
+
                 />
             </IonItem>
 
@@ -90,14 +90,12 @@ export const Login = () => {
                     placeholder="Contraseña"
                     onIonInput={(e) => setPassword(e.detail.value!)}
                     value={password}
-                    mode="ios"
                 />
             </IonItem>
             <IonButton
                 id="present-alert"
                 color="warning"
                 expand="block"
-                mode="ios"
                 shape="round"
                 className="fw-bold mt-5"
                 onClick={handleLogin}
@@ -107,7 +105,6 @@ export const Login = () => {
 
             <IonAlert
                 isOpen={showAlert}
-                mode="ios"
                 header={alertMessage.header}
                 message={alertMessage.message}
                 buttons={alertMessage.buttons}

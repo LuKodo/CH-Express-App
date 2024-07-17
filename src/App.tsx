@@ -1,7 +1,4 @@
-import { IonApp, IonRouterOutlet, IonSplitPane, setupIonicReact } from '@ionic/react';
-import { IonReactRouter } from '@ionic/react-router';
-import { Redirect, Route } from 'react-router-dom';
-import Menu from './components/Menu';
+import { IonApp, setupIonicReact } from '@ionic/react';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -19,56 +16,82 @@ import '@ionic/react/css/text-transformation.css';
 import '@ionic/react/css/flex-utils.css';
 import '@ionic/react/css/display.css';
 
-/**
- * Ionic Dark Mode
- * -----------------------------------------------------
- * For more info, please see:
- * https://ionicframework.com/docs/theming/dark-mode
- */
-
-/* import '@ionic/react/css/palettes/dark.always.css'; */
-/* import '@ionic/react/css/palettes/dark.class.css'; */
 import '@ionic/react/css/palettes/dark.system.css';
 import '@fontsource-variable/inter';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './css/main.css';
-import { Tasks } from './components/OrderList';
+import { Tasks } from './pages/Orders';
 import { Login } from './pages/Login';
 import { OrderDetails } from './components/OrderDetails';
+import { Navigate, Route, RouterProvider, Routes } from 'react-router';
+import {BrowserRouter, createBrowserRouter} from 'react-router-dom';
+import { Layout } from './components/Layout';
+import {lazy, Suspense} from "react";
+import {Loader} from "./components/Loader";
+import {getCars, getTasks} from "./services/task.service";
+import {Cars} from "./pages/Cars";
 
 setupIonicReact();
+
+const ErrorPage = () => {
+  return <>Error</>
+}
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Layout />,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        path: '/destination',
+        HydrateFallback: Loader,
+        async lazy()
+        {
+          const { Tasks } = await import('./pages/Orders')
+          return {
+            Component: Tasks,
+            loader: async () => {
+              return await getTasks()
+            },
+          }
+        },
+      },
+      {
+        path: "/details/:id",
+        element: <OrderDetails />,
+        errorElement: <ErrorPage />,
+      },
+      {
+        path: "/cars",
+        HydrateFallback: Loader,
+        async lazy()
+        {
+          const { Cars } = await import('./pages/Cars')
+          return {
+            Component: Cars,
+            loader: async () => {
+              return await getCars()
+            },
+          }
+        },
+      }]
+  },
+  {
+    path: "/login",
+    element: <Login />,
+    errorElement: <ErrorPage />,
+  },
+]);
 
 const App: React.FC = () => {
   return (
     <IonApp>
-      <IonReactRouter>
-        <IonRouterOutlet>
-          <Route path="/" exact={true}>
-            <Redirect to="/login" />
-          </Route>
-          <Route path="/login" exact={true}>
-            <Login />
-          </Route>
-
-          <IonSplitPane contentId="main">
-            <Menu />
-            <Route path="/orders" exact={true}>
-              <Tasks type="order_service" />
-            </Route>
-            <Route path="/destination" exact={true}>
-              <Tasks type="destination" />
-            </Route>
-            <Route path="/travel_relation" exact={true}>
-              <Tasks type="travel_relation" />
-            </Route>
-            <Route path="/details/:id" exact={true}>
-              <OrderDetails />
-            </Route>
-          </IonSplitPane>
-        </IonRouterOutlet>
-      </IonReactRouter>
-    </IonApp>
+        <Suspense fallback={<Loader />}>
+          <RouterProvider router={router} />
+        </Suspense>
+    </IonApp >
   );
 };
 

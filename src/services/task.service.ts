@@ -17,39 +17,86 @@ export interface StatusCheckList {
   description: string;
 }
 
-export const getTasks = async (): Promise<Task[]> => {
-  const response = await fetch("tasks.json");
+const user = "demo"
+const pwd = "demo"
+const base64Credentials = btoa(`${user}:${pwd}`)
 
-  const data = await response.json();
-  return data;
-};
-
-export const getChekTasks = async (): Promise<TaskList> => {
-  const response = await fetch("checklist.json");
-
-  const data = await response.json();
-  return data;
+export interface FleteDestino {
+  id: number,
+  name: string,
+  partner_id: [number, string],
+  shipping_destination_id: [number, string],
+  shipping_origin_id: [number, string],
+  number_of_packages: number,
+  note: string,
+  state: string
 }
 
-export const getTask = async (id: string): Promise<Task | undefined> => {
-  const tasks = await getTasks();
-  return tasks.find((task) => task.numero_pedido === id);
-};
+export const getTasks = async (): Promise<FleteDestino[]> => {
+  const queryParams = new URLSearchParams({
+    model: "tms.package",
+    fields: '["name","partner_id","shipping_destination_id","shipping_origin_id","number_of_packages","note","state"]',
+    domain: '[]',
+  }).toString()
 
-export const getCheckList = async (type: string): Promise<StatusCheckList[] | undefined> => {
-  const tasks = await getChekTasks();
-  if (type === "order_service") {
-    return tasks.order_service;
-  } else if (type === "destination") {
-    return tasks.destination;
-  } else if (type === "travel_relation") {
-    return tasks.travel_relation;
-  }
-};
-
-export const getTypesTasks = async (): Promise<string[]> => {
-  const response = await fetch("task_types.json");
+  const response = await fetch(`https://wmpenata-chexpressdb-tms-13720529.dev.odoo.com/api/v2/search_read?${queryParams}`, {
+    headers: {
+      'Authorization': `Basic ${base64Credentials}`,
+    }
+  });
 
   const data = await response.json();
-  return data;
+  return data
+};
+
+export const changeStatus = async (id: number, status: string) => {
+  const queryParams = new URLSearchParams({
+    model: "tms.package",
+    ids: "["+id+"]",
+    values: '{"state": "'+status+'"}',
+  }).toString()
+
+  const response = await fetch(`https://wmpenata-chexpressdb-tms-13720529.dev.odoo.com/api/v2/write?${queryParams}`, {
+    method: 'PUT',
+    headers: {
+      'Authorization': `Basic ${base64Credentials}`,
+    }
+  });
+
+  const data = await response.json();
+  return data
 }
+
+export const getCars = async () => {
+  const queryParams = new URLSearchParams({
+    model: "fleet.vehicle",
+    fields: '["name","license_plate","state_id","odometer","image_128"]',
+    domain: '[["driver_id", "=", 35067]]',
+  }).toString()
+
+  const response = await fetch(`https://wmpenata-chexpressdb-tms-13720529.dev.odoo.com/api/v2/search_read?${queryParams}`, {
+    headers: {
+      'Authorization': `Basic ${base64Credentials}`,
+    }
+  });
+
+  const data = await response.json();
+  return data
+}
+
+export const getTask = async (name: string): Promise<FleteDestino[]> => {
+  const queryParams = new URLSearchParams({
+    model: "tms.package",
+    fields: '["name","partner_id","shipping_destination_id","shipping_origin_id","number_of_packages","note","state"]',
+    domain: '[["name","=",'+name+']]',
+  }).toString()
+
+  const response = await fetch(`https://wmpenata-chexpressdb-tms-13720529.dev.odoo.com/api/v2/search_read?${queryParams}`, {
+    headers: {
+      'Authorization': `Basic ${base64Credentials}`,
+    }
+  });
+
+  const data = await response.json();
+  return data
+};

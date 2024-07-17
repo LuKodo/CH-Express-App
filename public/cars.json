@@ -48,3 +48,42 @@
     "color": "Rojo"
   }
 ]
+
+const appPages: AppPage[] = [
+{
+title: 'Ordenes de Servicio',
+url: '/orders',
+icon: 'file-earmark-binary',
+},
+{
+title: 'Flete Destino',
+url: '/destination',
+icon: 'truck',
+},
+{
+title: 'Relación de Viaje',
+url: '/travel_relation',
+icon: 'geo-alt',
+},
+{
+title: 'Información del Vehículo',
+url: '/folder/Archived',
+icon: 'truck',
+},
+{
+title: 'Perfil',
+url: '/folder/Trash',
+icon: 'person-gear',
+},
+{
+title: 'Ajustes',
+url: '/folder/Spam',
+icon: 'gear',
+},
+{
+title: 'Salir',
+url: '/',
+icon: 'box-arrow-left',
+out: true,
+}
+];

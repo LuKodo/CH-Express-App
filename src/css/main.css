@@ -1,3 +1,17 @@
 * {
   font-family: 'Inter Variable', sans-serif;
 }
+
+.cover-loading {
+  position: fixed;
+  width: 100%;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: #fff !important;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
