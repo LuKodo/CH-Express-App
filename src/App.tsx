@@ -21,16 +21,16 @@ import '@fontsource-variable/inter';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './css/main.css';
-import { Tasks } from './pages/Orders';
 import { Login } from './pages/Login';
 import { OrderDetails } from './components/OrderDetails';
-import { Navigate, Route, RouterProvider, Routes } from 'react-router';
-import {BrowserRouter, createBrowserRouter} from 'react-router-dom';
+import { RouterProvider } from 'react-router';
+import { createBrowserRouter } from 'react-router-dom';
 import { Layout } from './components/Layout';
-import {lazy, Suspense} from "react";
-import {Loader} from "./components/Loader";
-import {getCars, getTasks} from "./services/task.service";
-import {Cars} from "./pages/Cars";
+import { lazy, Suspense } from "react";
+import { Loader } from "./components/Loader";
+import { getCars, getTasks } from "./services/task.service";
+const Cars = lazy(() => import("./pages/Cars"))
+const Tasks = lazy(() => import("./pages/Orders"))
 
 setupIonicReact();
 
@@ -47,16 +47,11 @@ const router = createBrowserRouter([
       {
         path: '/destination',
         HydrateFallback: Loader,
-        async lazy()
-        {
-          const { Tasks } = await import('./pages/Orders')
-          return {
-            Component: Tasks,
-            loader: async () => {
-              return await getTasks()
-            },
-          }
+        loader: async () => {
+          return await getTasks()
         },
+        element: <Tasks />,
+        errorElement: <ErrorPage />,
       },
       {
         path: "/details/:id",
@@ -64,18 +59,13 @@ const router = createBrowserRouter([
         errorElement: <ErrorPage />,
       },
       {
-        path: "/cars",
+        path: '/cars',
         HydrateFallback: Loader,
-        async lazy()
-        {
-          const { Cars } = await import('./pages/Cars')
-          return {
-            Component: Cars,
-            loader: async () => {
-              return await getCars()
-            },
-          }
+        loader: async () => {
+          return await getCars()
         },
+        element: <Cars />,
+        errorElement: <ErrorPage />,
       }]
   },
   {
@@ -88,9 +78,9 @@ const router = createBrowserRouter([
 const App: React.FC = () => {
   return (
     <IonApp>
-        <Suspense fallback={<Loader />}>
-          <RouterProvider router={router} />
-        </Suspense>
+      <Suspense fallback={<Loader />}>
+        <RouterProvider router={router} />
+      </Suspense>
     </IonApp >
   );
 };

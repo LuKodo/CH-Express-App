@@ -1,4 +1,4 @@
-import {Fragment, useState} from "react";
+import React, {Fragment, useState} from "react";
 import {useLoaderData} from "react-router-dom";
 
 interface iCars {
@@ -11,7 +11,7 @@ interface iCars {
     location: string, //Capacidad de carga
 }
 
-export const Cars = () => {
+const Cars: React.FC = () => {
     const data = useLoaderData() as iCars[]
     const [filter, setFilter] = useState(data)
 
@@ -63,3 +63,5 @@ export const Cars = () => {
         </div>
     )
 }
+
+export default Cars

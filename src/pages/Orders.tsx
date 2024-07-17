@@ -4,7 +4,7 @@ import { FleteDestino } from "../services/task.service";
 import { loggedIn } from "../services/user.service";
 import { useNavigate, useLoaderData } from "react-router-dom";
 
-export const Tasks: React.FC = () => {
+const Tasks: React.FC = () => {
     const navigate = useNavigate()
     const data = useLoaderData() as FleteDestino[]
     const [filterTasks, setFilterTasks] = useState<FleteDestino[]>(data);
@@ -53,3 +53,5 @@ export const Tasks: React.FC = () => {
         </div>
     )
 }
+
+export default Tasks
