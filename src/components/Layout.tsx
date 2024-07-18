@@ -1,11 +1,8 @@
 import { IonPage } from "@ionic/react";
-import {Link, Outlet, useLocation} from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
 import { NetworkStatus } from "./NetworkStatus";
-import {ReactNode, useState} from "react";
-
-interface iProps {
-    children: ReactNode
-}
+import { useState } from "react";
+import { logout } from "../services/user.service";
 
 interface AppPage {
     url: string;
@@ -15,6 +12,11 @@ interface AppPage {
 }
 
 const appPages: AppPage[] = [
+    {
+        title: 'Relación de Carga',
+        url: '/package-relation',
+        icon: 'truck',
+    },
     {
         title: 'Flete Destino',
         url: '/destination',
@@ -27,14 +29,8 @@ const appPages: AppPage[] = [
     },
     {
         title: 'Perfil',
-        url: '/folder/Trash',
+        url: '/profile',
         icon: 'person-gear',
-    },
-    {
-        title: 'Salir',
-        url: '/',
-        icon: 'box-arrow-left',
-        out: true,
     }
 ];
 
@@ -63,10 +59,17 @@ export const Layout: React.FC = () => {
                             </Link>
                         ))
                     }
+                    <button
+                        className="btn btn-warning w-100 d-flex align-items-center py-2 mb-3"
+                        onClick={() => logout()}
+                    >
+                        <i className="bi bi-box-arrow-left me-3 fs-4" />
+                        <span className="text-decoration-none fw-semibold text-dark">Salir</span>
+                    </button>
                 </div>
             </div>
             <div className="row">
-                <NetworkStatus/>
+                <NetworkStatus />
                 <div className="col-12">
                     <div className="d-flex align-items-baseline px-3 bg-light py-2">
                         <i className="bi bi-list fs-2" onClick={() => setShow(true)}></i>

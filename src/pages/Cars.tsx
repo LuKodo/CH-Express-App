@@ -1,5 +1,6 @@
-import React, {Fragment, useState} from "react";
-import {useLoaderData} from "react-router-dom";
+import React, { startTransition, useCallback, useEffect, useState } from "react";
+import { getCars } from "../services/task.service";
+import { Loader } from "../components/Loader";
 
 interface iCars {
     id: number,
@@ -12,8 +13,34 @@ interface iCars {
 }
 
 const Cars: React.FC = () => {
-    const data = useLoaderData() as iCars[]
-    const [filter, setFilter] = useState(data)
+    const [data, setData] = useState<iCars[]>([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<any>();
+    const [filter, setFilter] = useState<iCars[]>([]);
+
+    const fetchData = useCallback(async () => {
+        try {
+            setLoading(true);
+            const data = await getCars();
+            startTransition(() => {
+                setData(data);
+                setFilter(data);
+                setError(undefined);
+            })
+        } catch (error) {
+            startTransition(() => {
+                setError(error);
+            })
+        } finally {
+            startTransition(() => {
+                setLoading(false);
+            })
+        }
+    }, [])
+
+    useEffect(() => {
+        fetchData();
+    }, [fetchData]);
 
     const handleInput = (value: string) => {
         let query = '';
@@ -33,33 +60,39 @@ const Cars: React.FC = () => {
                             onChange={(event) => handleInput(event.target.value)}
                         />
                         <span className="input-group-text bg-warning text-white border-0" id="basic-addon1">
-                            <i className="bi bi-search"/>
+                            <i className="bi bi-search" />
                         </span>
                     </div>
                 </div>
             </div>
-
-            <div className="row" style={{ height: "calc(100vh - 150px)", overflow: "auto" }}>
-                <div className="col">
-                {
-                    filter.map((car) => (
-                        <div className="card border-warning mb-3" key={car.id}>
-                            <div className="card-body p-3 d-flex justify-content-between">
-                                <img src={`data:image/png;base64,${car.image_128}`} alt=""
-                                     className={'border rounded w-50'}/>
-                                <div className='row w-50'>
-                                    <span className={"fw-bold"}>{car.name.split('/')[0]}</span>
-                                    <span>Placa: <b>{car.license_plate}</b></span>
-                                    <span>Capacidad: </span>
-                                    <span>Refrigeración: </span>
-                                    <span>Odometro: {car.odometer} Km</span>
-                                </div>
-                            </div>
+            {
+                filter.length > 0 && (
+                    <div className="row" style={{ height: "calc(100vh - 150px)", overflow: "auto" }}>
+                        <div className="col">
+                            {
+                                filter.map((car) => (
+                                    <div className="card border-warning mb-3" key={car.id}>
+                                        <div className="card-body p-3 d-flex justify-content-between">
+                                            <img src={`data:image/png;base64,${car.image_128}`} alt=""
+                                                className={'border rounded w-50'} />
+                                            <div className='row w-50'>
+                                                <span className={"fw-bold"}>{car.name.split('/')[0]}</span>
+                                                <span>Placa: <b>{car.license_plate}</b></span>
+                                                <span>Capacidad: </span>
+                                                <span>Refrigeración: </span>
+                                                <span>Odometro: {car.odometer} Km</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))
+                            }
                         </div>
-                    ))
-                }
-                </div>
-            </div>
+                    </div>
+                )
+            }
+
+            {error && <div>{error.message}</div>}
+            {loading && <Loader />}
         </div>
     )
 }

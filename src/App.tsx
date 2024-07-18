@@ -22,22 +22,20 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './css/main.css';
 import { Login } from './pages/Login';
-import { OrderDetails } from './components/OrderDetails';
-import { RouterProvider } from 'react-router';
+import { Navigate, RouterProvider } from 'react-router';
 import { createBrowserRouter } from 'react-router-dom';
 import { Layout } from './components/Layout';
-import { lazy, Suspense } from "react";
-import { Loader } from "./components/Loader";
-import { getCars, getTasks } from "./services/task.service";
-const Cars = lazy(() => import("./pages/Cars"))
-const Tasks = lazy(() => import("./pages/Orders"))
+import { useState } from "react";
+import Tasks from './pages/Tasks';
+import Cars from './pages/Cars';
+import PackageRelation from './pages/PackageRelation';
+import PackagesRelation from './pages/PackagesRelation';
 
 setupIonicReact();
 
 const ErrorPage = () => {
   return <>Error</>
 }
-
 const router = createBrowserRouter([
   {
     path: "/",
@@ -45,25 +43,33 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       {
+        path: '/',
+        element: <Navigate to={"/package-relation"} />,
+        errorElement: <ErrorPage />,
+      },
+      {
         path: '/destination',
-        HydrateFallback: Loader,
-        loader: async () => {
-          return await getTasks()
-        },
         element: <Tasks />,
         errorElement: <ErrorPage />,
       },
       {
-        path: "/details/:id",
-        element: <OrderDetails />,
+        path: '/package-relation',
         errorElement: <ErrorPage />,
+        children: [
+          {
+            path: "/package-relation/",
+            element: <PackagesRelation />,
+            errorElement: <ErrorPage />,
+          },
+          {
+            path: "/package-relation/:id",
+            element: <PackageRelation />,
+            errorElement: <ErrorPage />,
+          }
+        ]
       },
       {
         path: '/cars',
-        HydrateFallback: Loader,
-        loader: async () => {
-          return await getCars()
-        },
         element: <Cars />,
         errorElement: <ErrorPage />,
       }]
@@ -76,11 +82,11 @@ const router = createBrowserRouter([
 ]);
 
 const App: React.FC = () => {
+  const [loading, setLoading] = useState(true)
+
   return (
     <IonApp>
-      <Suspense fallback={<Loader />}>
-        <RouterProvider router={router} />
-      </Suspense>
+      <RouterProvider router={router} />
     </IonApp >
   );
 };

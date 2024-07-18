@@ -44,7 +44,7 @@ export const Login = () => {
 
             if (user) {
                 localStorage.setItem("user", JSON.stringify(user));
-                navigate('/orders');
+                navigate('/');
             } else {
                 setAlertMessage({
                     header: "Login Failed",

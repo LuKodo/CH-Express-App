@@ -57,7 +57,7 @@ export const OrderComponent: React.FC<OrderComponentProps> = ({ order }) => {
             <div className="card-footer d-flex justify-content-between">
                 {
                     statusManage.getNextStatus(order.state)?.map((status) => {
-                        return <button onClick={() => changeStatusOrder(order.id, status)} className={`btn w-100 mx-1 ${statusManage.getStateDefinition(status) === 'Cancelado' ? 'btn-danger' : 'btn-warning'}`}>{statusManage.getStateDefinition(status) === 'Cancelado' ? 'Cancelar' : statusManage.getStateDefinition(status)}</button>
+                        return <button key={status} onClick={() => changeStatusOrder(order.id, status)} className={`btn w-100 mx-1 ${statusManage.getStateDefinition(status) === 'Cancelado' ? 'btn-danger' : 'btn-warning'}`}>{statusManage.getStateDefinition(status) === 'Cancelado' ? 'Cancelar' : statusManage.getStateDefinition(status)}</button>
                     })
                 }
             </div>
