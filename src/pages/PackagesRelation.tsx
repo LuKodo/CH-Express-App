@@ -75,7 +75,7 @@ const PackagesRelation: React.FC = () => {
                                             </div>
 
                                             <div className="d-flex align-items-center justify-content-between">
-                                                <Link to={`/package-relation/${order.name}`} className="btn btn-warning w-100 fw-bold">
+                                                <Link to={`/package-relation/${order.id}`} className="btn btn-warning w-100 fw-bold">
                                                     <i className="bi bi-info-circle" /> Detalles
                                                 </Link>
                                             </div>
