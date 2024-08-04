@@ -82,8 +82,6 @@ const router = createBrowserRouter([
 ]);
 
 const App: React.FC = () => {
-  const [loading, setLoading] = useState(true)
-
   return (
     <IonApp>
       <RouterProvider router={router} />
