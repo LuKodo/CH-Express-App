@@ -16,10 +16,7 @@ export const Login = () => {
     const [users, setUsers] = useState<User[]>([]);
 
     useEffect(() => {
-        const logged = localStorage.getItem("user");
-        if (logged) {
-            navigate('/orders');
-        }
+        localStorage.removeItem("user");
 
         const fetchTasks = async () => {
             try {
@@ -40,7 +37,6 @@ export const Login = () => {
 
         if (username !== "" && password !== "") {
             const user = users.find((user) => user.usuario === username && user.contrasena === password);
-            console.log(user);
 
             if (user) {
                 localStorage.setItem("user", JSON.stringify(user));
@@ -69,13 +65,13 @@ export const Login = () => {
             <IonImg
                 src="logo.jpg"
                 alt="logo"
+                className="mt-5 img-fluid"
             />
 
             <IonItem className="mt-5">
                 <IonInput
                     label="Usuario"
-                    labelPlacement="stacked"
-                    placeholder="Usuario"
+                    labelPlacement="floating"
                     onIonInput={(e) => setUsername(e.detail.value!)}
                     value={username}
 
@@ -85,9 +81,8 @@ export const Login = () => {
             <IonItem className="mt-4">
                 <IonInput
                     label="Contraseña"
-                    labelPlacement="stacked"
+                    labelPlacement="floating"
                     type="password"
-                    placeholder="Contraseña"
                     onIonInput={(e) => setPassword(e.detail.value!)}
                     value={password}
                 />
@@ -96,7 +91,6 @@ export const Login = () => {
                 id="present-alert"
                 color="warning"
                 expand="block"
-                shape="round"
                 className="fw-bold mt-5"
                 onClick={handleLogin}
             >

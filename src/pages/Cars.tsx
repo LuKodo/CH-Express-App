@@ -1,6 +1,7 @@
 import React, { startTransition, useCallback, useEffect, useState } from "react";
 import { getCars } from "../services/task.service";
 import { Loader } from "../components/Loader";
+import { IonCard, IonCardContent, IonCardHeader, IonContent, IonHeader, IonPage, IonSearchbar, IonTitle, IonCardTitle, IonToolbar, IonThumbnail, IonItem, IonLabel, IonList } from "@ionic/react";
 
 interface iCars {
     id: number,
@@ -50,50 +51,42 @@ const Cars: React.FC = () => {
     };
 
     return (
-        <div className={"container"}>
-            <div className="row">
-                <div className="col">
-                    <div className="input-group my-3">
-                        <input
-                            className="form-control form-control-lg border-warning"
-                            placeholder="Placa del vehículo"
-                            onChange={(event) => handleInput(event.target.value)}
-                        />
-                        <span className="input-group-text bg-warning text-white border-0" id="basic-addon1">
-                            <i className="bi bi-search" />
-                        </span>
-                    </div>
-                </div>
-            </div>
-            {
-                filter.length > 0 && (
-                    <div className="row" style={{ height: "calc(100vh - 150px)", overflow: "auto" }}>
-                        <div className="col">
-                            {
-                                filter.map((car) => (
-                                    <div className="card border-warning mb-3" key={car.id}>
-                                        <div className="card-body p-3 d-flex justify-content-between">
-                                            <img src={`data:image/png;base64,${car.image_128}`} alt=""
-                                                className={'border rounded w-50'} />
-                                            <div className='row w-50'>
-                                                <span className={"fw-bold"}>{car.name.split('/')[0]}</span>
-                                                <span>Placa: <b>{car.license_plate}</b></span>
-                                                <span>Capacidad: </span>
-                                                <span>Refrigeración: </span>
-                                                <span>Odometro: {car.odometer} Km</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                ))
-                            }
-                        </div>
-                    </div>
-                )
-            }
+        <IonPage>
+            <IonHeader>
+                <IonToolbar>
+                    <IonTitle>Vehículos</IonTitle>
+                </IonToolbar>
+            </IonHeader>
+            <IonContent>
+                <Loader setError={setError} loading={loading} error={error} />
+                <IonSearchbar
+                    onIonChange={(event) => handleInput(event.detail.value!)}
+                    placeholder="Numero de placa"
+                />
+                {
+                    filter.length > 0 &&
+                    filter.map((car) => (
+                        <IonCard key={car.id}>
+                            <IonCardContent>
+                                <IonItem>
+                                    <IonThumbnail slot="start">
+                                        <img src={`data:image/png;base64,${car.image_128}`} alt="" />
+                                    </IonThumbnail>
+                                    <IonLabel className="fw-bold">{car.name.split('/')[0]}</IonLabel>
+                                </IonItem>
+                                <IonList>
+                                    <IonItem>Placa: <b className="ms-1">{car.license_plate}</b></IonItem>
+                                    <IonItem>Capacidad: </IonItem>
+                                    <IonItem>Refrigeración: </IonItem>
+                                    <IonItem>Odometro: {car.odometer} Km</IonItem>
 
-            {error && <div>{error.message}</div>}
-            {loading && <Loader />}
-        </div>
+                                </IonList>
+                            </IonCardContent>
+                        </IonCard>
+                    ))
+                }
+            </IonContent>
+        </IonPage>
     )
 }
 

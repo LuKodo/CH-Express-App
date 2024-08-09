@@ -3,7 +3,6 @@ import { changeStatusCarga, getTask, iPackageRelation } from "../services/task.s
 import { Loader } from "../components/Loader.tsx";
 import { useParams } from "react-router-dom";
 import { StatusManage } from "../services/StatusManage.tsx";
-import { scan, startScan } from "../components/QRCodeScanner.tsx";
 
 const PackageRelation: React.FC = () => {
     const { id } = useParams()
@@ -83,13 +82,14 @@ const PackageRelation: React.FC = () => {
                                 <div className="card-body row">
                                     <div className="d-flex justify-content-between align-items-center">
                                         <span className="badge bg-light text-dark">{line.name}</span>
-                                        <span className="badge bg-warning">{line.state}</span>
+                                        <span className="badge bg-warning">{statusManage.getStateDefinition(line.state, 'package')}</span>
                                     </div>
                                     <div className='d-flex mt-3'>
                                         <span className="small">Remitente: <b>{order.order_partner_id && order.order_partner_id[1]}</b></span>
                                     </div>
-                                    <div className="d-flex justify-content-between align-items-center">
-                                        <span className="small">Cliente: <b>{line.partner_id[1]}</b></span>
+                                    <div className="d-flex flex-column align-items-center">
+                                        <span className="small">Cliente: </span>
+                                        <b>{line.partner_id[1]}</b>
                                     </div>
                                     <span className="small">Factura: <b>{line.nro_fv}</b></span>
                                     {line.nro_fv_adicional && <span>Adicional: <b className="badge bg-warning">{line.nro_fv_adicional}</b></span>}
@@ -100,10 +100,10 @@ const PackageRelation: React.FC = () => {
                                     <div className="d-flex mt-3">
                                         {
                                             statusManage.getNextStatus(line.state)?.map((status) => {
-                                                return <button key={status} onClick={() => changeStatusOrder(line.id, status)} className={`btn fw-bold w-100 me-2 ${statusManage.getStateDefinition(status) === 'Cancelado' ? 'btn-danger' : 'btn-warning'}`}>{statusManage.getStateDefinition(status) === 'Cancelado' ? 'Cancelar' : statusManage.getStateDefinition(status)}</button>
+                                                return <button key={status} onClick={() => changeStatusOrder(line.id, status)} className={`btn btn-sm fw-bold w-100 me-2 ${statusManage.getStateDefinition(status, 'package') === 'Devuelta' ? 'btn-danger' : 'btn-warning'}`}>{statusManage.getStateDefinition(status, 'package') === 'Cancelado' ? 'Cancelar' : statusManage.getStateDefinition(status, 'package')}</button>
                                             })
                                         }
-                                        <button className="btn btn-warning" onClick={() => scan()}>
+                                        <button className="btn btn-warning">
                                             <i className="bi bi-qr-code-scan" />
                                         </button>
                                     </div>
@@ -113,9 +113,6 @@ const PackageRelation: React.FC = () => {
                     </div>
                 </div>
             ))}
-
-            {error && <div className="alert alert-danger">{error.message}</div>}
-            {loading && <Loader />}
         </div>
     )
 }

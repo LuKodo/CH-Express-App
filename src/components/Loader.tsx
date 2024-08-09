@@ -1,13 +1,23 @@
-export const Loader = () => {
+import { IonAlert, IonLoading } from "@ionic/react";
+
+interface ILoaderProps {
+    loading: boolean;
+    error?: any;
+    setError: (error: any) => void;
+}
+export const Loader = ({ loading, error, setError }: ILoaderProps) => {
     return (
-        <div className="d-flex justify-content-center">
-            <div
-                className="spinner-border text-warning mt-5 me-4"
-                role="status"
-                style={{ width: "8rem", height: "8rem" }}
-            >
-                <span className="visually-hidden">Loading...</span>
-            </div>
-        </div>
+        <>
+            {error && 
+                <IonAlert
+                    isOpen={true}
+                    onDidDismiss={() => setError(undefined)}
+                    header="Error"
+                    message={error.message}
+                    buttons={["OK"]}
+                />
+            }
+            {loading && <IonLoading isOpen={loading} message="Cargando..." duration={3000} />}
+        </>
     );
 };

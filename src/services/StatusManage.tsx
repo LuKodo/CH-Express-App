@@ -1,38 +1,37 @@
-import Swal from 'sweetalert2'
 import {changeStatus} from "./task.service";
 export class StatusManage {
     draft ="Borrador"
-    pending ="Pendiente"
-    ready ="Preparado"
-    progress ="En proceso"
-    loading ="Cargando"
-    transit ="En tránsito"
-    unloading ="Descargando"
-    done ="Terminado"
-    cancel ="Cancelado"
+    pending ="Efectuada"
+    ready ="No Efectuada"
+    progress ="No Despachada"
+    loading ="Por Redespachar"
+    transit ="Despachada"
+    unloading ="En Transito"
+    done ="Entregada"
+    cancel ="Devuelta"
 
-    getStateDefinition(stateName: string): string {
+    getStateDefinition(stateName: string, tms: string): string {
         switch (stateName) {
             case 'draft':
                 return this.draft;
             case 'pending':
-                return this.pending;
+                return tms === 'package' ? 'Recolectada': this.pending;
             case 'ready':
-                return this.ready;
+                return tms === 'package' ? 'No Despachada': this.ready;
             case 'progress':
-                return this.progress;
+                return tms === 'package' ? 'Por Redespachar': this.progress;
             case 'loading':
-                return this.loading;
+                return tms === 'package' ? 'Despachada': this.loading;
             case 'transit':
-                return this.transit;
+                return tms === 'package' ? 'En Transito': this.transit;
             case 'unloading':
-                return this.unloading;
+                return tms === 'package' ? 'Descargando': this.unloading;
             case 'done':
                 return this.done;
             case 'cancel':
                 return this.cancel;
             default:
-                throw new Error(`Estado '${stateName}' no encontrado.`);
+                return '';
         }
     }
 
