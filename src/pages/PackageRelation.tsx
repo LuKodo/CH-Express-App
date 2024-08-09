@@ -3,7 +3,7 @@ import { changeStatusCarga, getTask, iPackageRelation } from "../services/task.s
 import { Loader } from "../components/Loader.tsx";
 import { useParams } from "react-router-dom";
 import { StatusManage } from "../services/StatusManage.tsx";
-import { startScan } from "../components/QRCodeScanner.tsx";
+import { scan, startScan } from "../components/QRCodeScanner.tsx";
 
 const PackageRelation: React.FC = () => {
     const { id } = useParams()
@@ -103,7 +103,7 @@ const PackageRelation: React.FC = () => {
                                                 return <button key={status} onClick={() => changeStatusOrder(line.id, status)} className={`btn fw-bold w-100 me-2 ${statusManage.getStateDefinition(status) === 'Cancelado' ? 'btn-danger' : 'btn-warning'}`}>{statusManage.getStateDefinition(status) === 'Cancelado' ? 'Cancelar' : statusManage.getStateDefinition(status)}</button>
                                             })
                                         }
-                                        <button className="btn btn-warning" onClick={() => startScan()}>
+                                        <button className="btn btn-warning" onClick={() => scan()}>
                                             <i className="bi bi-qr-code-scan" />
                                         </button>
                                     </div>
