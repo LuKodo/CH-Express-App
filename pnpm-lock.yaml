@@ -14,6 +14,9 @@ importers:
       '@capacitor/app':
         specifier: 6.0.1
         version: 6.0.1(@capacitor/core@6.1.2)
+      '@capacitor/barcode-scanner':
+        specifier: ^1.0.1
+        version: 1.0.1(@capacitor/core@6.1.2)
       '@capacitor/core':
         specifier: 6.1.2
         version: 6.1.2
@@ -725,6 +728,11 @@ packages:
 
   '@capacitor/app@6.0.1':
     resolution: {integrity: sha512-0kXbOl7LPPMFVcAii3u/7Ps0DvXlr7dtHT97r9J1faDlgdQLQUvtGp48tjvFm48gqHI0aOPRJnTBr5JXW4ETYg==}
+    peerDependencies:
+      '@capacitor/core': ^6.0.0
+
+  '@capacitor/barcode-scanner@1.0.1':
+    resolution: {integrity: sha512-LBeP5DQKlkY0gzM4x/kj/rSTgz/CnfrfSHL3EDRHzlqDNctVAvpG58g/0x7aHyoM3VlKN/OUb9B/zX4fZpjeHQ==}
     peerDependencies:
       '@capacitor/core': ^6.0.0
 
@@ -1981,6 +1989,9 @@ packages:
   html-encoding-sniffer@4.0.0:
     resolution: {integrity: sha512-Y22oTqIU4uuPgEemfz7NDJz6OeKf12Lsu+QC+s3BVpda64lTiMYCyGwg5ki4vFxkMwQdeZDl2adZoqUgdFuTgQ==}
     engines: {node: '>=18'}
+
+  html5-qrcode@2.3.8:
+    resolution: {integrity: sha512-jsr4vafJhwoLVEDW3n1KvPnCCXWaQfRng0/EEYk1vNcQGcG/htAdhJX0be8YyqMoSz7+hZvOZSTAepsabiuhiQ==}
 
   http-proxy-agent@7.0.2:
     resolution: {integrity: sha512-T1gkAiYYDWYx3V5Bmyu7HcfcvL7mUrTWiM6yOfa3PIphViJ/gFPbvidQ+veqSOHci/PxBcDabeUNCzpOODJZig==}
@@ -3987,6 +3998,11 @@ snapshots:
     dependencies:
       '@capacitor/core': 6.1.2
 
+  '@capacitor/barcode-scanner@1.0.1(@capacitor/core@6.1.2)':
+    dependencies:
+      '@capacitor/core': 6.1.2
+      html5-qrcode: 2.3.8
+
   '@capacitor/cli@6.1.2':
     dependencies:
       '@ionic/cli-framework-output': 2.2.8
@@ -5462,6 +5478,8 @@ snapshots:
   html-encoding-sniffer@4.0.0:
     dependencies:
       whatwg-encoding: 3.1.1
+
+  html5-qrcode@2.3.8: {}
 
   http-proxy-agent@7.0.2:
     dependencies:

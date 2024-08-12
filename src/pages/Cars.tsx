@@ -1,7 +1,7 @@
 import React, { startTransition, useCallback, useEffect, useState } from "react";
 import { getCars } from "../services/task.service";
 import { Loader } from "../components/Loader";
-import { IonCard, IonCardContent, IonCardHeader, IonContent, IonHeader, IonPage, IonSearchbar, IonTitle, IonCardTitle, IonToolbar, IonThumbnail, IonItem, IonLabel, IonList } from "@ionic/react";
+import { IonCard, IonCardContent, IonContent, IonHeader, IonPage, IonSearchbar, IonTitle, IonCardTitle, IonToolbar, IonThumbnail, IonItem, IonLabel, IonList } from "@ionic/react";
 
 interface iCars {
     id: number,
