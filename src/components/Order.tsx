@@ -1,6 +1,7 @@
 import { changeStatus, FleteDestino } from "../services/task.service"
 import { StatusManage } from "../services/StatusManage";
 import { IonBadge, IonButton, IonCard, IonCardContent, IonCardHeader } from "@ionic/react";
+import { Card } from "react-bootstrap";
 
 interface OrderComponentProps {
     order: FleteDestino
@@ -14,49 +15,52 @@ export const OrderComponent: React.FC<OrderComponentProps> = ({ order }) => {
     }
 
     return (
-        <IonCard>
-            <IonCardHeader>
-                <div className="d-flex justify-content-between align-items-center">
-                    <h3 className="fw-bold h6 card-title mb-0 pb-0">Pedido N° {order.name}</h3>
-                    <IonBadge className="text-bg-dark" slot="start">{statusManage.getStateDefinition(order.state, '')}</IonBadge>
+        <Card className="card-style">
+            <div className="content">
+                <div className="d-flex">
+                    <div>
+                        <h6 className="fw-bold">Pedido N° {order.name}</h6>
+                    </div>
+                    <div className="align-self-center ms-auto">
+                        <span className="badge badge-s bg-yellow-dark" slot="start">{statusManage.getStateDefinition(order.state, '')}</span>
+                    </div>
                 </div>
-            </IonCardHeader>
-            <IonCardContent className="d-flex flex-column">
-                <div className="d-flex flex-column align-items-start mb-2">
-                    <span className="fw-bold text-uppercase">Cliente: </span>
-                    <span>{order.partner_id[1]}</span>
-                </div>
-                <div className="d-flex flex-column align-items-start mb-2">
-                    <span className="fw-bold text-uppercase">Origen: </span>
-                    <span>{order.shipping_origin_id[1]}</span>
-                </div>
-                <div className="d-flex flex-column align-items-start mb-2">
-                    <span className="fw-bold text-uppercase"><i className="bi bi-geo-alt-fill text-danger me-2" />Destino: </span>
-                    <span>{order.shipping_destination_id[1]}</span>
-                </div>
-                <div className="d-flex flex-column align-items-start">
-                    <span className="fw-bold text-uppercase">Observaciones: </span>
-                    <span>{order.note ? order.note : ''}</span>
-                </div>
-                <div className="d-flex justify-content-between align-items-center mt-3">
+                <p>
+                    <div className="d-flex flex-column align-items-start mb-2">
+                        <span className="fw-bold text-uppercase">Cliente: </span>
+                        <span>{order.partner_id[1]}</span>
+                    </div>
+                    <div className="d-flex flex-column align-items-start mb-2">
+                        <span className="fw-bold text-uppercase">
+                            <i className="bi bi-geo-alt-fill text-success me-2" />Origen: </span>
+                        <span>{order.shipping_origin_id[1]}</span>
+                    </div>
+                    <div className="d-flex flex-column align-items-start mb-2">
+                        <span className="fw-bold text-uppercase">
+                            <i className="bi bi-geo-alt-fill text-danger me-2" />Destino: </span>
+                        <span>{order.shipping_destination_id[1]}</span>
+                    </div>
+                    <div className="d-flex flex-column align-items-start">
+                        <span className="fw-bold text-uppercase">Observaciones: </span>
+                        <span>{order.note ? order.note : ''}</span>
+                    </div>
+                </p>
+
+                <div className="d-flex justify-content-between align-items-center gap-2">
                     {
                         statusManage.getNextStatus(order.state)?.map((status) => {
                             return (
-                                <IonButton
-                                    key={status}
+                                <span
+                                    className={`btn btn-xs w-100 bg-${statusManage.getStateDefinition(status, '') === 'Cancelado' ? 'red' : 'yellow'}-light`}
                                     onClick={() => changeStatusOrder(order.id, status)}
-                                    className={`w-100 mx-1 fw-bold`}
-                                    fill="solid"
-                                    size="small"
-                                    color={`${statusManage.getStateDefinition(status, '') === 'Cancelado' ? 'danger' : 'warning'}`}
                                 >
                                     {statusManage.getStateDefinition(status, '') === 'Cancelado' ? 'Cancelar' : statusManage.getStateDefinition(status, '')}
-                                </IonButton>
+                                </span>
                             )
                         })
                     }
                 </div>
-            </IonCardContent>
-        </IonCard>
+            </div>
+        </Card>
     )
 }

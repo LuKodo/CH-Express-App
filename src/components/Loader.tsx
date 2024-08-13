@@ -8,7 +8,7 @@ interface ILoaderProps {
 export const Loader = ({ loading, error, setError }: ILoaderProps) => {
     return (
         <>
-            {error && 
+            {error &&
                 <IonAlert
                     isOpen={true}
                     onDidDismiss={() => setError(undefined)}
@@ -17,7 +17,17 @@ export const Loader = ({ loading, error, setError }: ILoaderProps) => {
                     buttons={["OK"]}
                 />
             }
-            {loading && <IonLoading isOpen={loading} message="Cargando..." duration={3000} />}
+            {loading &&
+                <div className="d-flex justify-content-center">
+                    <div className="preloader-l">
+                        <div
+                            className="spinner-border color-yellow-dark"
+                            style={{ borderWidth: "7px" }}
+                            role="status"
+                        />
+                    </div>
+                </div>
+            }
         </>
     );
 };

@@ -4,16 +4,17 @@ import { Loader } from "../components/Loader.tsx";
 import { Link } from "react-router-dom";
 import { IonBadge, IonButton, IonCard, IonCardContent, IonCol, IonContent, IonGrid, IonHeader, IonPage, IonRow, IonSearchbar, IonTitle, IonToolbar } from "@ionic/react";
 import { StatusManage } from "../services/StatusManage.tsx";
+import { Card } from "react-bootstrap";
 
 const PackagesRelation: React.FC = () => {
     const [data, setData] = useState<SaleOrder[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<any>();
     const [orders, setOrders] = useState<SaleOrder[]>([])
-    
+
     const statusManage = new StatusManage()
 
-    
+
 
     const fetchData = useCallback(async () => {
         try {
@@ -46,49 +47,36 @@ const PackagesRelation: React.FC = () => {
     };
 
     return (
-        <IonPage>
-            <IonHeader>
-                <IonToolbar>
-                    <IonTitle>Relacion de Carga</IonTitle>
-                </IonToolbar>
-            </IonHeader>
-            <IonContent>
-                <IonSearchbar
-                    onIonChange={(event) => handleInput(event.detail.value!)}
-                    placeholder="Numero de pedido"
-                />
-                <Loader setError={setError} loading={loading} error={error} />
-                {
-                    !loading &&
-                    orders.length > 0 &&
-                    orders.map((order) => (
-                        <IonCard key={order.name}>
-                            <IonCardContent>
-                                <div className='d-flex flex-column mb-3'>
-                                    <div className="d-flex align-items-center justify-content-between mb-2">
-                                        <span className={"fw-bold"}>{order.name.split('/')[0]}</span>
-                                        <IonBadge className="text-bg-dark" slot="start">{statusManage.getStateDefinition(order.state, 'package')}</IonBadge>
-                                    </div>
-                                    <div className="d-flex flex-column align-items-start">
-                                        <span className="small">Cliente: </span>
-                                        <b>{order.partner_id[1]}</b>
-                                    </div>
-                                    <span>Ciudad: {order.city || 'N/A'}</span>
-                                    <span>Valor Total: $ {order.amount_total}</span>
+        <>
+            <Loader setError={setError} loading={loading} error={error} />
+            {
+                !loading &&
+                orders.length > 0 &&
+                orders.map((order) => (
+                    <Card className="card-style" key={order.name}>
+                        <div className="content">
+                            <div className='d-flex flex-column mb-3'>
+                                <div className="d-flex align-items-center justify-content-between mb-2">
+                                    <span className={"fw-bold"}>{order.name.split('/')[0]}</span>
+                                    <span className="badge bg-blue-light color-white ms-2">{statusManage.getStateDefinition(order.state, 'package')}</span>
                                 </div>
-                                <div className="d-flex justify-content-between">
-                                    <IonButton className="w-100 fw-bold" fill="solid" size="small" color="warning" href={`/package-relation/${order.id}`}>
-                                        <i className="bi bi-info-circle me-2" /> Detalles
-                                    </IonButton>
+                                <div className="d-flex flex-column align-items-start">
+                                    <span className="small">Cliente: </span>
+                                    <b>{order.partner_id[1]}</b>
                                 </div>
-                            </IonCardContent>
-
-
-                        </IonCard>
-                    ))
-                }
-            </IonContent>
-        </IonPage>
+                                <span>Ciudad: {order.city || 'N/A'}</span>
+                                <span>Valor Total: $ {order.amount_total}</span>
+                            </div>
+                            <div className="d-flex justify-content-between">
+                                <Link className="btn btn-xs gradient-yellow w-100 fw-bold" to={`/package-relation/${order.id}`}>
+                                    <i className="bi bi-info-circle me-2" /> Detalles
+                                </Link>
+                            </div>
+                        </div>
+                    </Card>
+                ))
+            }
+        </>
     )
 }
 

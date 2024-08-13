@@ -2,6 +2,7 @@ import React, { startTransition, useCallback, useEffect, useState } from "react"
 import { getCars } from "../services/task.service";
 import { Loader } from "../components/Loader";
 import { IonCard, IonCardContent, IonContent, IonHeader, IonPage, IonSearchbar, IonTitle, IonCardTitle, IonToolbar, IonThumbnail, IonItem, IonLabel, IonList } from "@ionic/react";
+import { Card } from "react-bootstrap";
 
 interface iCars {
     id: number,
@@ -51,42 +52,35 @@ const Cars: React.FC = () => {
     };
 
     return (
-        <IonPage>
-            <IonHeader>
-                <IonToolbar>
-                    <IonTitle>Vehículos</IonTitle>
-                </IonToolbar>
-            </IonHeader>
-            <IonContent>
-                <Loader setError={setError} loading={loading} error={error} />
-                <IonSearchbar
-                    onIonChange={(event) => handleInput(event.detail.value!)}
-                    placeholder="Numero de placa"
-                />
-                {
-                    filter.length > 0 &&
-                    filter.map((car) => (
-                        <IonCard key={car.id}>
-                            <IonCardContent>
-                                <IonItem>
-                                    <IonThumbnail slot="start">
-                                        <img src={`data:image/png;base64,${car.image_128}`} alt="" />
-                                    </IonThumbnail>
-                                    <IonLabel className="fw-bold">{car.name.split('/')[0]}</IonLabel>
-                                </IonItem>
-                                <IonList>
-                                    <IonItem>Placa: <b className="ms-1">{car.license_plate}</b></IonItem>
-                                    <IonItem>Capacidad: </IonItem>
-                                    <IonItem>Refrigeración: </IonItem>
-                                    <IonItem>Odometro: {car.odometer} Km</IonItem>
-
-                                </IonList>
-                            </IonCardContent>
-                        </IonCard>
-                    ))
-                }
-            </IonContent>
-        </IonPage>
+        <>
+            <Loader setError={setError} loading={loading} error={error} />
+            {
+                filter.length > 0 &&
+                filter.map((car) => (
+                    <Card className="card-style" key={car.id}>
+                        <div className="content">
+                            <h6 className="fw-bold">
+                                <img src={`data:image/png;base64,${car.image_128}`} className="img-fluid w-25" alt="" /> {car.name.split('/')[0]}
+                            </h6>
+                            <div className="list-group list-custom list-group-m rounded-xs">
+                                <a href="#" className="list-group-item">
+                                    <div>Placa: <b className="ms-1">{car.license_plate}</b></div>
+                                </a>
+                                <a href="#" className="list-group-item">
+                                    <div>Capacidad: <b className="ms-1"></b></div>
+                                </a>
+                                <a href="#" className="list-group-item">
+                                    <div>Refrigeración: <b className="ms-1"></b></div>
+                                </a>
+                                <a href="#" className="list-group-item">
+                                    <div>Odometro: <b className="ms-1">{car.odometer}</b></div>
+                                </a>
+                            </div>
+                        </div>
+                    </Card>
+                ))
+            }
+        </>
     )
 }
 

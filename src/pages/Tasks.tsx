@@ -1,5 +1,5 @@
 import { OrderComponent } from "../components/Order";
-import { startTransition, useCallback, useEffect, useState } from "react";
+import { Fragment, startTransition, useCallback, useEffect, useState } from "react";
 import { FleteDestino, getTasks } from "../services/task.service";
 import { Loader } from "../components/Loader";
 import {
@@ -51,25 +51,14 @@ const Tasks: React.FC = () => {
   };
 
   return (
-    <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>Flete Destino</IonTitle>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent>
-        <IonSearchbar
-          onIonChange={(event) => handleInput(event.detail.value!)}
-          placeholder="Numero de pedido"
-        />
+    <Fragment>
         <Loader setError={setError} loading={loading} error={error} />
         {filterTasks.length > 0 &&
           filterTasks?.map((order) => {
             return <OrderComponent key={order.name} order={order} />;
           })
         }
-      </IonContent>
-    </IonPage>
+    </Fragment>
   );
 };
 
