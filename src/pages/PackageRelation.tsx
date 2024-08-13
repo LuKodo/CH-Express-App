@@ -3,9 +3,8 @@ import { changeStatusCarga, getTask, iPackageRelation } from "../services/task.s
 import { Loader } from "../components/Loader.tsx";
 import { useParams } from "react-router-dom";
 import { StatusManage } from "../services/StatusManage.tsx";
-import { IonBackButton, IonButtons, IonCard, IonCardContent, IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from "@ionic/react";
-import { arrowBackCircle } from "ionicons/icons";
 import { Card } from "react-bootstrap";
+import { Barcode } from "./Barcode.tsx";
 
 const PackageRelation: React.FC = () => {
     const { id } = useParams()
@@ -15,6 +14,7 @@ const PackageRelation: React.FC = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<any>();
     const [orders, setOrders] = useState<iPackageRelation[]>([])
+    const [showBarcode, setShowBarcode] = useState(false)
 
     const fetchData = useCallback(async () => {
         try {
@@ -77,6 +77,7 @@ const PackageRelation: React.FC = () => {
 
     return (
         <>
+            {showBarcode && <Barcode show={showBarcode} setShow={setShowBarcode} />}
             <Loader setError={setError} loading={loading} error={error} />
             {!loading && orders.length > 0 && orders.map((order) => (
                 <>
@@ -123,7 +124,7 @@ const PackageRelation: React.FC = () => {
                                             return <button key={status} onClick={() => changeStatusOrder(line.id, status)} className={`btn btn-xs fw-bold w-100 me-2 ${statusManage.getStateDefinition(status, 'package') === 'Devuelta' ? 'btn-danger' : 'btn-warning'}`}>{statusManage.getStateDefinition(status, 'package') === 'Cancelado' ? 'Cancelar' : statusManage.getStateDefinition(status, 'package')}</button>
                                         })
                                     }
-                                    <button className="btn btn-xs btn-warning">
+                                    <button className="btn btn-xs btn-warning" onClick={() => setShowBarcode(true)}>
                                         <i className="bi bi-qr-code-scan" />
                                     </button>
                                 </div>
