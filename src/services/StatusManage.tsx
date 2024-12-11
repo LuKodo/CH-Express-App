@@ -1,4 +1,3 @@
-import {changeStatus} from "./task.service";
 export class StatusManage {
     draft ="Borrador"
     pending ="Efectuada"
@@ -52,9 +51,5 @@ export class StatusManage {
             case 'unloading':
                 return ['done', 'cancel'];
         }
-    }
-
-    async setNewStatus(prev:string, next: string, id:number) {
-        await changeStatus(id, next)
     }
 }

@@ -20,17 +20,16 @@ import '@ionic/react/css/palettes/dark.system.css';
 import '@fontsource-variable/inter';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
-import { Login } from './pages/Login';
-import Tasks from './pages/Tasks';
-import Cars from './pages/Cars';
-import PackageRelation from './pages/PackageRelation';
-import PackagesRelation from './pages/PackagesRelation';
-import { Navigate, RouterProvider, createBrowserRouter } from 'react-router-dom';
-import { Layout } from './components/Layout';
-import { Barcode } from './pages/Barcode';
+import Cars from './presentation/pages/Cars';
+import { BrowserRouter, Navigate, Route, Routes, createBrowserRouter } from 'react-router-dom';
 
 import '@fontsource-variable/inter';
-import { Profile } from './pages/Profile';
+import { Profile } from './presentation/pages/Profile';
+import Home from './presentation/pages/Home';
+import Details from './presentation/pages/Details';
+import { Layout } from './presentation/components/Layout';
+import { LoginPage } from './presentation/pages/Login';
+import { AuthProvider } from './presentation/context/AuthContext';
 
 setupIonicReact();
 const ErrorPage = () => <div>Page Not Found</div>;
@@ -38,73 +37,23 @@ const Logout = () => {
   return <Navigate to={'/login'} />
 }
 
-const logged = localStorage.getItem("user");
-
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Layout />,
-    errorElement: <ErrorPage />,
-    children: [
-      {
-        path: '/',
-        element: <Navigate to={"/login"} />,
-        errorElement: <ErrorPage />,
-      },
-      {
-        path: '/destination',
-        element: <Tasks />,
-        errorElement: <ErrorPage />,
-      },
-      {
-        path: '/package-relation',
-        errorElement: <ErrorPage />,
-        children: [
-          {
-            path: "/package-relation/",
-            element: <PackagesRelation />,
-            errorElement: <ErrorPage />,
-          },
-          {
-            path: "/package-relation/:id",
-            element: <PackageRelation />,
-            errorElement: <ErrorPage />,
-          }
-        ]
-      },
-      {
-        path: '/cars',
-        element: <Cars />,
-        errorElement: <ErrorPage />,
-      },
-      {
-        path: '/profile',
-        element: <Profile />,
-        errorElement: <ErrorPage />,
-      },
-      {
-        path: '/logout',
-        element: <Logout />,
-        errorElement: <ErrorPage />,
-      }
-    ]
-  },
-  {
-    path: "/login",
-    element: <Login />,
-    errorElement: <ErrorPage />,
-  },
-  {
-    path: "barcode",
-    element: <Barcode />,
-  }
-]);
-
 const App: React.FC = () => {
   return (
-    <IonRouterOutlet>
-      <RouterProvider router={router} />
-    </IonRouterOutlet>
+    <AuthProvider>
+      <IonRouterOutlet>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/" element={<Layout />}>
+              <Route path='/home' element={<Home />} />
+              <Route path="/details/:id/:model" element={<Details />} />
+              <Route path="/cars" element={<Cars />} />
+              <Route path="/profile" element={<Profile />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </IonRouterOutlet>
+    </AuthProvider>
   );
 };
 

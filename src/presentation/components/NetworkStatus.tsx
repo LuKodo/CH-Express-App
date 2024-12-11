@@ -1,5 +1,5 @@
-import {useEffect, useState} from "react";
-import { Network} from "@capacitor/network";
+import { useEffect, useState } from "react";
+import { Network } from "@capacitor/network";
 
 
 export const NetworkStatus = () => {
@@ -20,12 +20,12 @@ export const NetworkStatus = () => {
     }, [networkStatus]);
 
     return (
-        <div className={`bg-${networkStatus ? 'success' : 'danger'} text-center text-white fw-bold`}>
+        <div className={`text-center fw-bold rounded rounded-4 px-1`}>
             {
                 networkStatus ? (
-                    <span>Estás en línea <i className={"bi bi-wifi"}/></span>
+                    <i className={"bi bi-wifi text-success px-1"} />
                 ) : (
-                    <span>Sin conexión a Internet <i className={"bi bi-wifi-off"}/></span>
+                    <i className={"bi bi-wifi-off text-danger px-1"} />
                 )
             }
         </div>

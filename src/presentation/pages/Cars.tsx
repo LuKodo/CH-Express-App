@@ -1,5 +1,4 @@
 import React, { startTransition, useCallback, useEffect, useState } from "react";
-import { getCars } from "../services/task.service";
 import { Loader } from "../components/Loader";
 import { IonCard, IonCardContent, IonContent, IonHeader, IonPage, IonSearchbar, IonTitle, IonCardTitle, IonToolbar, IonThumbnail, IonItem, IonLabel, IonList } from "@ionic/react";
 import { Card } from "react-bootstrap";
@@ -20,29 +19,6 @@ const Cars: React.FC = () => {
     const [error, setError] = useState<any>();
     const [filter, setFilter] = useState<iCars[]>([]);
 
-    const fetchData = useCallback(async () => {
-        try {
-            setLoading(true);
-            const data = await getCars();
-            startTransition(() => {
-                setData(data);
-                setFilter(data);
-                setError(undefined);
-            })
-        } catch (error) {
-            startTransition(() => {
-                setError(error);
-            })
-        } finally {
-            startTransition(() => {
-                setLoading(false);
-            })
-        }
-    }, [])
-
-    useEffect(() => {
-        fetchData();
-    }, [fetchData]);
 
     const handleInput = (value: string) => {
         let query = '';
